@@ -1,0 +1,63 @@
+services:
+    app-db:
+        image: mysql:8.4
+        environment:
+            MYSQL_DATABASE: ${DB}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - ../db-conf/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ../db-conf/init:/docker-entrypoint-initdb.d:ro
+            - ../db-data:/var/lib/mysql
+        healthcheck:
+            test: mysqladmin ping -h localhosu root --password=${DB_ROOT_PASSWORD}
+            start_period: 5s
+            interval: 5s
+            timeout: 5s
+            retries: 55
+        restart: unless-stopped
+        networks:
+            - intranet
+
+    gatekeeper:
+        build:
+            context: ../services/gatekeeper
+            dockerfile: ./Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+            - ASPNETCORE_URLS=http://+:5420
+        restart: unless-stopped
+        ports:
+            - "5420:5420"
+        networks:
+            - intranet
+
+    static-files:
+        build:
+            context: ../services/static-files
+            dockerfile: ./Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+            - ASPNETCORE_URLS=http://+:5421
+        restart: unless-stopped
+        volumes:
+            - ../services/static-files/WebApi/StaticFiles:/root/app/bin/StaticFiles:rw
+        networks:
+            - intranet
+
+    orders:
+        depends_on:
+            app-db:
+                condition: service_healthy
+        build:
+            context: ../services/orders
+            dockerfile: ./Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+            - ASPNETCORE_URLS=http://+:5422
+            - ConnectionStrings__App=Server=app-db;uid=${DB_USER};pwd=${DB_USER_PASSWORD};database=${DB};port=3306
+        restart: unless-stopped
+        networks:
+            - intranet
+
+networks:
+    intranet:

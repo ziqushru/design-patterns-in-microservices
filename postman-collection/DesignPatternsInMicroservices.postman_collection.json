@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "8b0e30f7-f220-4469-8271-3dc957f14143",
+		"name": "DesignPatternsInMicroservices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11355023"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Queries",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5420/orders/get-by-id/v1?id=",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5420",
+									"path": [
+										"orders",
+										"get-by-id",
+										"v1"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Commands",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": 0,\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"johndoe@gmail.com\",\r\n    \"cellPhone\": \"6971234567\",\r\n    \"streetName\": \"Bastion\",\r\n    \"streetNumber\": \"32\",\r\n    \"zipCode\": \"14343\",\r\n    \"country\": \"Greece\",\r\n    \"town\": \"Athens\",\r\n    \"paymentMethodName\": \"Cash\",\r\n    \"shippingMethodName\": \"OnSite\",\r\n    \"orderItems\": [\r\n        {\r\n            \"quantity\": 2,\r\n            \"price\": 20,\r\n            \"productName\": \"Trousers\"\r\n        }\r\n    ],\r\n    \"note\": \"Just some comments here...\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5420/orders/create/v1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5420",
+									"path": [
+										"orders",
+										"create",
+										"v1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": 0,\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"johndoe@gmail.com\",\r\n    \"cellPhone\": \"6971234567\",\r\n    \"streetName\": \"Bastion\",\r\n    \"streetNumber\": \"32\",\r\n    \"zipCode\": \"14343\",\r\n    \"country\": \"Greece\",\r\n    \"town\": \"Athens\",\r\n    \"paymentMethodName\": \"Cash\",\r\n    \"shippingMethodName\": \"OnSite\",\r\n    \"orderItems\": [\r\n        {\r\n            \"quantity\": 2,\r\n            \"price\": 20,\r\n            \"productName\": \"Trousers\"\r\n        }\r\n    ],\r\n    \"note\": \"Just some comments here...\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5420/orders/create/v1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5420",
+									"path": [
+										"orders",
+										"create",
+										"v1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

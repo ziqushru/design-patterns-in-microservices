@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"name": "Gatekeeper Service",
+			"path": "services/gatekeeper"
+		},
+		{
+			"name": "Orders Service",
+			"path": "services/orders"
+		},
+		{
+			"name": "Static Files Service",
+			"path": "services/static-files"
+		},
+		{
+			"name": "Containers Conf",
+			"path": "containers-conf"
+		},
+		{
+			"name": "Scripts",
+			"path": "scripts"
+		},
+		{
+			"name": "Postman Collection",
+			"path": "postman-collection"
+		}
+	],
+	"settings": {
+		"files.eol": "\n",
+		"dotnet.defaultSolution": "services/DesignPatternsInMicroservices.sln",
+		"entityframework.project": "services/payments/Infrastructure/Persistence.csproj",
+		"entityframework.startupProject": "services/payments/WebApi/WebApi.csproj",
+	}
+}
