@@ -4,11 +4,11 @@ WORKDIR /root/app
 
 COPY . .
 
-RUN dotnet restore --use-current-runtime
+RUN dotnet restore --use-current-runtime ./WebApi/StaticFiles.WebApi.csproj
 
 RUN dotnet publish -c Release --os linux --arch x64 --use-current-runtime --self-contained false ./WebApi/StaticFiles.WebApi.csproj -o /root/app/bin
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 as runtime-img
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime-img
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
