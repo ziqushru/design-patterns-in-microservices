@@ -53,8 +53,6 @@ public static class Delete
             var order = await ordersRepository.GetByIdAsync(command.Order.Id, cancellationToken)
                 ?? throw new Exception("Δεν βρέθηκε η παραγγελία");
 
-            var destinationStatus = Status.Cancelled;
-
             await ordersService.UpdateAsync(order, cancellationToken);
 
             await ordersService.DeleteAsync(command.Order.Id, cancellationToken);
