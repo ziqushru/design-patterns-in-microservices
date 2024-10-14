@@ -6,7 +6,6 @@ using Core.Application.Abstractions.Repositories;
 using Core.Application.Abstractions.Services;
 using Core.Domain.Abstractions.Exceptions;
 using Core.Domain.Entities;
-using Core.Domain.Enums;
 
 namespace Core.Application.Services;
 

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Domain.Entities;
-using Core.Domain.Enums;
 
 namespace Core.Application.Abstractions.Services;
 

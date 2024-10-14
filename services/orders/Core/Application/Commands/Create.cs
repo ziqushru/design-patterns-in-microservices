@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using Core.Application.Abstractions.Commands;
-using Core.Application.Abstractions.Repositories;
 using Core.Domain.Entities;
 using Core.Application.Abstractions.Services;
 using System.Collections.Generic;

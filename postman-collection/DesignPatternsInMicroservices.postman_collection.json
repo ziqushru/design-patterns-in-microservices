@@ -16,7 +16,20 @@
 							"name": "Get All",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5420/orders/get-all/v1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5420",
+									"path": [
+										"orders",
+										"get-all",
+										"v1"
+									]
+								}
 							},
 							"response": []
 						},
@@ -38,7 +51,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5420/orders/get-by-id/v1?id=",
+									"raw": "http://localhost:5420/orders/get-by-id/v1?id=08dcebc0-444e-4165-8a95-44ec91b9ff62",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -52,7 +65,7 @@
 									"query": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "08dcebc0-444e-4165-8a95-44ec91b9ff62"
 										}
 									]
 								}
@@ -97,11 +110,11 @@
 						{
 							"name": "Update",
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"status\": 0,\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"johndoe@gmail.com\",\r\n    \"cellPhone\": \"6971234567\",\r\n    \"streetName\": \"Bastion\",\r\n    \"streetNumber\": \"32\",\r\n    \"zipCode\": \"14343\",\r\n    \"country\": \"Greece\",\r\n    \"town\": \"Athens\",\r\n    \"paymentMethodName\": \"Cash\",\r\n    \"shippingMethodName\": \"OnSite\",\r\n    \"orderItems\": [\r\n        {\r\n            \"quantity\": 2,\r\n            \"price\": 20,\r\n            \"productName\": \"Trousers\"\r\n        }\r\n    ],\r\n    \"note\": \"Just some comments here...\"\r\n}",
+									"raw": "{\r\n    \"id\": \"08dcebc0-444e-4165-8a95-44ec91b9ff62\",\r\n    \"status\": 6,\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"johndoe@gmail.com\",\r\n    \"cellPhone\": \"6971234567\",\r\n    \"streetName\": \"Bastion\",\r\n    \"streetNumber\": \"32\",\r\n    \"zipCode\": \"14343\",\r\n    \"country\": \"Greece\",\r\n    \"town\": \"Athens\",\r\n    \"paymentMethodName\": \"Cash\",\r\n    \"shippingMethodName\": \"OnSite\",\r\n    \"trackingNumber\": \"7HG5KO8\",\r\n    \"note\": \"Just some comments here...\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -109,7 +122,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:5420/orders/create/v1",
+									"raw": "http://localhost:5420/orders/update/v1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -117,7 +130,7 @@
 									"port": "5420",
 									"path": [
 										"orders",
-										"create",
+										"update",
 										"v1"
 									]
 								}
@@ -125,6 +138,68 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Static Files",
+			"item": [
+				{
+					"name": "Get Sample Order Pdf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5420/static-files/get/Orders/sample.pdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5420",
+							"path": [
+								"static-files",
+								"get",
+								"Orders",
+								"sample.pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ikout/Downloads/CloudDesignPatternsBook-PDF.pdf"
+								},
+								{
+									"key": "filePath",
+									"value": "Orders",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5420/static-files/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5420",
+							"path": [
+								"static-files",
+								"create"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

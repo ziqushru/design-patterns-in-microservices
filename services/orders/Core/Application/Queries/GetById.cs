@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Core.Application.Abstractions.Queries;
-using Core.Application.Abstractions.Repositories;
-using Core.Domain.Entities;
 using Core.Domain.Enums;
 using FluentValidation;
 using Dapper;

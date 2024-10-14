@@ -1,10 +1,4 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders.Physical;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +11,7 @@ var fileProvider = new PhysicalFileProvider(
     Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles"),
     ExclusionFilters.Sensitive);
 
-var requestPath = new PathString("/static-files");
+var requestPath = new PathString("/get");
 
 app.UseDefaultFiles()
     .UseStaticFiles(new StaticFileOptions()
@@ -30,5 +24,34 @@ app.UseDefaultFiles()
         FileProvider = fileProvider,
         RequestPath = requestPath
     });
+
+app.MapPost("/create",
+    async (HttpRequest request) =>
+        {
+            var file = request.Form.Files[0];
+            var filePath = request.Form["filePath"];
+
+            if (file is null || file.Length == 0)
+            {
+                return Results.BadRequest("No file uploaded");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+
+            uploadPath = uploadPath + "/" + filePath;
+
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            var fullFilePath = Path.Combine(uploadPath, file.FileName);
+
+            using var stream = new FileStream(fullFilePath, FileMode.Create);
+
+            await file.CopyToAsync(stream);
+
+            return Results.Ok();
+        });
 
 await app.RunAsync();
