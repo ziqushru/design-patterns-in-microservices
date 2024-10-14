@@ -7,24 +7,6 @@ builder.Services.AddDirectoryBrowser();
 
 var app = builder.Build();
 
-var fileProvider = new PhysicalFileProvider(
-    Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles"),
-    ExclusionFilters.Sensitive);
-
-var requestPath = new PathString("/get");
-
-app.UseDefaultFiles()
-    .UseStaticFiles(new StaticFileOptions()
-    {
-        FileProvider = fileProvider,
-        RequestPath = requestPath
-    })
-    .UseDirectoryBrowser(new DirectoryBrowserOptions
-    {
-        FileProvider = fileProvider,
-        RequestPath = requestPath
-    });
-
 app.MapPost("/create",
     async (HttpRequest request) =>
         {
@@ -53,5 +35,23 @@ app.MapPost("/create",
 
             return Results.Ok();
         });
+
+var fileProvider = new PhysicalFileProvider(
+    Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles"),
+    ExclusionFilters.Sensitive);
+
+var requestPath = new PathString("/get");
+
+app.UseDefaultFiles()
+    .UseStaticFiles(new StaticFileOptions()
+    {
+        FileProvider = fileProvider,
+        RequestPath = requestPath
+    })
+    .UseDirectoryBrowser(new DirectoryBrowserOptions
+    {
+        FileProvider = fileProvider,
+        RequestPath = requestPath
+    });
 
 await app.RunAsync();

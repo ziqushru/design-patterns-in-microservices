@@ -33,8 +33,6 @@ services:
             - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
             - ASPNETCORE_URLS=http://+:5421
         restart: unless-stopped
-        volumes:
-            - ../services/static-files/WebApi/StaticFiles:/root/app/bin/StaticFiles:rw
         networks:
             - intranet
 
