@@ -6,7 +6,6 @@ using Core.Application.Abstractions.Commands;
 using Core.Application.Abstractions.Repositories;
 using Core.Application.Abstractions.Services;
 using Core.Domain.Entities;
-using Core.Domain.Enums;
 using FluentValidation;
 
 namespace Core.Application.Commands;
