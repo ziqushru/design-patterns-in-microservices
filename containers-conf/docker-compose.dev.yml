@@ -79,6 +79,7 @@ services:
           - ../services/MessagingBus/Logs:/var/log/rabbitmq
         ports:
             - "5425:5672"
+            - "15425:15672"
         networks:
             - intranet
 
