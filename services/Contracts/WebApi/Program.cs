@@ -6,6 +6,7 @@ using Contracts.Core.Application.Commands;
 using Contracts.Core.Application.Services;
 using Contracts.Infrastructure.Persistence;
 using Contracts.Infrastructure.Persistence.Repositories;
+using Contracts.MessageBus.Consumers;
 using Contracts.Presentation.PostProcessors;
 using Contracts.Presentation.PreProcessors;
 using Contracts.WebApi.Managers;
@@ -39,6 +40,7 @@ var domainAssembly = typeof(Order).Assembly;
 var applicationAssembly = typeof(Create).Assembly;
 var presentationAssembly = typeof(Update).Assembly;
 var persistenceAssembly = typeof(ApplicationContext).Assembly;
+var messageBusAssembly = typeof(ConsumerCreated).Assembly;
 
 ValidatorOptions.Global.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
 
@@ -64,7 +66,7 @@ builder.Services
         cfg.RegisterServicesFromAssembly(applicationAssembly);
     })
     .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
-    .AddAutoMapper(new[] { presentationAssembly, applicationAssembly })
+    .AddAutoMapper(new[] { presentationAssembly, applicationAssembly, messageBusAssembly })
     .AddValidatorsFromAssembly(applicationAssembly, ServiceLifetime.Transient, includeInternalTypes: true)
     .AddFastEndpoints(options =>
     {

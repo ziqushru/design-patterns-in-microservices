@@ -19,6 +19,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Infrastructure\Messaging\Contracts.MessageBus.csproj" />
         <ProjectReference Include="..\Presentation\Contracts.Presentation.csproj" />
         <ProjectReference Include="..\Infrastructure\Persistence\Contracts.Persistence.csproj" />
     </ItemGroup>

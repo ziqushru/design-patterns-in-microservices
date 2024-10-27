@@ -22,7 +22,10 @@ public class ConsumersService(
 
         await publishEndpoint.Publish(new Created
         {
-            Id = id
+            Id = id,
+            FirstName = consumer.FirstName,
+            LastName = consumer.LastName,
+            Type = (int)consumer.Type
         },
         cancellationToken);
 
@@ -50,7 +53,10 @@ public class ConsumersService(
 
         await publishEndpoint.Publish(new Updated
         {
-            Id = consumer.Id
+            Id = consumer.Id,
+            FirstName = consumer.FirstName,
+            LastName = consumer.LastName,
+            Type = (int)consumer.Type
         },
         cancellationToken);
     }

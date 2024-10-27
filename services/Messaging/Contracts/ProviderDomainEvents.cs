@@ -5,11 +5,13 @@ public static class ProviderDomainEvents
     public sealed record Created
     {
         public required Guid Id { get; init; }
+        public required string BrandName { get; init; }
     }
 
     public sealed record Updated
     {
         public required Guid Id { get; init; }
+        public required string BrandName { get; init; }
     }
 
     public sealed record Deleted

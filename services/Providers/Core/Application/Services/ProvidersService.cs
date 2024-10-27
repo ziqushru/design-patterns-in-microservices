@@ -22,7 +22,8 @@ public class ProvidersService(
 
         await publishEndpoint.Publish(new Created
         {
-            Id = id
+            Id = id,
+            BrandName = provider.BrandName
         },
         cancellationToken);
 
@@ -50,7 +51,8 @@ public class ProvidersService(
 
         await publishEndpoint.Publish(new Updated
         {
-            Id = provider.Id
+            Id = provider.Id,
+            BrandName = provider.BrandName
         },
         cancellationToken);
     }
