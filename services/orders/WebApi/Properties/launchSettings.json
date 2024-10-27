@@ -1,12 +1,16 @@
 {
+    "$schema": "http://json.schemastore.org/launchsettings.json",
     "profiles": {
         "http": {
             "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "http://localhost:5422/swagger/index.html",
             "dotnetRunMessages": true,
-            "applicationUrl": "http://localhost:5422/"
-        },
-    },
-    "$schema": "https://json.schemastore.org/launchsettings.json"
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "applicationUrl": "http://localhost:5422",
+            "environmentVariables": {
+                "ASPNETCORE_URLS": "http://*:5422",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    }
 }

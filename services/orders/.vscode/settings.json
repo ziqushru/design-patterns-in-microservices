@@ -9,5 +9,7 @@
     "**/Thumbs.db": true,
     "**/obj": true,
     "**/bin": true
-  }
+  },
+  "entityframework.project": "Infrastructure/Persistence.csproj",
+  "entityframework.startupProject": "WebApi/WebApi.csproj"
 }

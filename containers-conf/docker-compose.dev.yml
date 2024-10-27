@@ -9,11 +9,11 @@ services:
             - ../db-conf/init:/docker-entrypoint-initdb.d:ro
             - ../db-data:/var/lib/mysql
         healthcheck:
-            test: mysqladmin ping -h localhosu root --password=${DB_ROOT_PASSWORD}
-            start_period: 5s
+            test: mysqladmin ping -h localhost -uroot --password=${DB_ROOT_PASSWORD}
+            start_period: 10s
             interval: 5s
             timeout: 5s
-            retries: 55
+            retries: 10
         restart: unless-stopped
         ports:
             - "23308:3306"

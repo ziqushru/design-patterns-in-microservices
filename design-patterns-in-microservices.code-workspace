@@ -23,12 +23,14 @@
 		{
 			"name": "Postman Collection",
 			"path": "postman-collection"
+		},
+		{
+			"name": "conf",
+			"path": "."
 		}
 	],
 	"settings": {
 		"files.eol": "\n",
-		"dotnet.defaultSolution": "services/DesignPatternsInMicroservices.sln",
-		"entityframework.project": "services/payments/Infrastructure/Persistence.csproj",
-		"entityframework.startupProject": "services/payments/WebApi/WebApi.csproj",
+		"dotnet.defaultSolution": "services/DesignPatternsInMicroservices.sln"
 	}
 }
