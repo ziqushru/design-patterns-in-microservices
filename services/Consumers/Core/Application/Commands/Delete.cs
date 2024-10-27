@@ -1,62 +1,48 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using Core.Application.Abstractions.Commands;
-using Core.Application.Abstractions.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Domain.Entities;
+using Consumers.Core.Application.Abstractions.Commands;
+using Consumers.Core.Application.Abstractions.Repositories;
+using Consumers.Core.Application.Abstractions.Services;
+using FastEndpoints;
 using FluentValidation;
 
-namespace Core.Application.Commands;
+namespace Consumers.Core.Application.Commands;
 
 public static class Delete
 {
     public static class Requests
     {
-        public sealed record Order(Guid Id);
-    }
-
-    public static class Responses
-    {
-        public sealed record Order(Guid Id);
-    }
-
-    public sealed record Command(Requests.Order Order) : IAppCommand<Responses.Order>;
-
-    internal sealed class MappingProfile : Profile
-    {
-        public MappingProfile()
+        public sealed record Consumer
         {
-            CreateMap<Requests.Order, Order>();
+            [FromBody]
+            public required Guid Id { get; init; }
         }
     }
+
+    public sealed record Command(Requests.Consumer Consumer) : IAppCommandWithoutResponse;
 
     internal sealed class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(command => command.Order.Id)
+            RuleFor(command => command.Consumer.Id)
                 .NotEmpty()
                 .WithMessage("Id is required");
         }
     }
 
     internal sealed class CommandHandler(
-        IOrdersService ordersService,
-        IOrdersRepository ordersRepository)
-        : IAppCommandHandler<Command, Responses.Order>
+        IConsumersService consumersService,
+        IConsumersRepository consumersRepository)
+        : IAppCommandHandlerWithoutResponse<Command>
     {
-        public async Task<Responses.Order> Handle(Command command, CancellationToken cancellationToken)
+        public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = await ordersRepository.GetByIdAsync(command.Order.Id, cancellationToken)
-                ?? throw new Exception("Δεν βρέθηκε η παραγγελία");
+            var consumer = await consumersRepository.GetByIdAsync(command.Consumer.Id, cancellationToken)
+                ?? throw new Exception("Δεν βρέθηκε ο καταναλωτής");
 
-            await ordersService.UpdateAsync(order, cancellationToken);
-
-            await ordersService.DeleteAsync(command.Order.Id, cancellationToken);
-
-            return new Responses.Order(command.Order.Id);
+            await consumersService.DeleteAsync(consumer, cancellationToken);
         }
     }
 }

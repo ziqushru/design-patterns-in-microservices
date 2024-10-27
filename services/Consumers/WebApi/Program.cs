@@ -1,3 +1,14 @@
+using Consumers.Core.Application.Abstractions.Repositories;
+using Consumers.Core.Application.Abstractions.Services;
+using Consumers.Core.Application.Behaviors;
+using Consumers.Core.Application.Commands;
+using Consumers.Core.Application.Services;
+using Consumers.Infrastructure.Persistence;
+using Consumers.Infrastructure.Persistence.Repositories;
+using Consumers.Presentation.PostProcessors;
+using Consumers.Presentation.PreProcessors;
+using Consumers.WebApi.Managers;
+using Consumers.WebApi.Utils;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using FluentValidation;
@@ -8,16 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Application.Abstractions.Repositories;
-using Presentation.PostProcessors;
-using Core.Application.Behaviors;
-using Presentation.PreProcessors;
-using WebApi.Utils;
-using WebApi.Managers;
-using Core.Application.Services;
+using Update = Consumers.Presentation.Endpoints.Orders.Commands.Update;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -32,9 +34,9 @@ builder.Host.UseSerilog((_, _, configuration) =>
 var mysqlServerVersion = ServerVersion.AutoDetect(databaseConnectionString);
 
 var domainAssembly = typeof(Order).Assembly;
-var applicationAssembly = typeof(Core.Application.Commands.Create).Assembly;
-var presentationAssembly = typeof(Presentation.Endpoints.Commands.Update).Assembly;
-var persistenceAssembly = typeof(Infrastructure.Persistence.ApplicationContext).Assembly;
+var applicationAssembly = typeof(Create).Assembly;
+var presentationAssembly = typeof(Update).Assembly;
+var persistenceAssembly = typeof(ApplicationContext).Assembly;
 
 ValidatorOptions.Global.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
 
@@ -67,8 +69,8 @@ builder.Services
         options.DisableAutoDiscovery = true;
         options.Assemblies = [presentationAssembly];
     })
-    .AddScoped<IOrdersRepository, OrdersRepository>()
-    .AddScoped<IOrdersService, OrdersService>()
+    .AddScoped<IConsumersRepository, ConsumersRepository>()
+    .AddScoped<IConsumersService, ConsumersService>()
     .AddCors(
         options => options.AddPolicy("AllowAll", builder =>
             builder
@@ -86,7 +88,7 @@ if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
             o.DocumentSettings = s =>
             {
                 s.DocumentName = "v1.0.0";
-                s.Title = "Payments";
+                s.Title = "Consumers";
                 s.Version = "v1.0.0";
             };
         });

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using MediatR;
 
-namespace Core.Domain.Abstractions.Entities;
+namespace Consumers.Core.Domain.Abstractions.Entities;
 
 public interface IDomainEvent : INotification { }
 

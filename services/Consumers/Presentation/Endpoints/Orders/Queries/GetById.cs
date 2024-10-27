@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using static Core.Application.Queries.GetById;
+using static Consumers.Core.Application.Queries.GetById;
 
-namespace Presentation.Endpoints.Queries;
+namespace Consumers.Presentation.Endpoints.Orders.Queries;
 
 public static class GetById
 {
-    internal sealed class Endpoint(ISender sender) : Endpoint<Requests.Order, IResult>
+    internal sealed class Endpoint(ISender sender) : Endpoint<Core.Application.Queries.GetById.Requests.Consumer, IResult>
     {
         public override void Configure()
         {
@@ -19,7 +19,7 @@ public static class GetById
             AllowAnonymous();
         }
 
-        public override async Task<IResult> ExecuteAsync(Requests.Order request, CancellationToken ct)
+        public override async Task<IResult> ExecuteAsync(Requests.Consumer request, CancellationToken ct)
         {
             var query = new Query(request);
 

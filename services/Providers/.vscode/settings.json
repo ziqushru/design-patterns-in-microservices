@@ -1,0 +1,15 @@
+{
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/obj": true,
+    "**/bin": true
+  },
+  "entityframework.project": "Infrastructure/Persistence.csproj",
+  "entityframework.startupProject": "WebApi/WebApi.csproj"
+}

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using static Core.Application.Queries.GetAll;
+using static Consumers.Core.Application.Queries.GetAll;
 
-namespace Presentation.Endpoints.Queries;
+namespace Consumers.Presentation.Endpoints.Orders.Queries;
 
 public static class GetAll
 {

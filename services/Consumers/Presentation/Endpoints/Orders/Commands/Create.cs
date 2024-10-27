@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using static Core.Application.Commands.Create;
+using static Consumers.Core.Application.Commands.Create;
 
-namespace Presentation.Endpoints.Commands;
+namespace Consumers.Presentation.Endpoints.Orders.Commands;
 
 public static class Create
 {
-    internal sealed class Endpoint(ISender sender) : Endpoint<Requests.Order, IResult>
+    internal sealed class Endpoint(ISender sender) : Endpoint<Core.Application.Commands.Create.Requests.Consumer, IResult>
     {
         public override void Configure()
         {
@@ -19,7 +19,7 @@ public static class Create
             AllowAnonymous();
         }
 
-        public override async Task<IResult> ExecuteAsync(Requests.Order request, CancellationToken ct)
+        public override async Task<IResult> ExecuteAsync(Requests.Consumer request, CancellationToken ct)
         {
             var command = new Command(request);
 

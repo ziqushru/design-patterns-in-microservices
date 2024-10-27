@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using static Core.Application.Commands.Delete;
+using static Consumers.Core.Application.Commands.Delete;
 
-namespace Presentation.Endpoints.Commands;
+namespace Consumers.Presentation.Endpoints.Orders.Commands;
 
 public static class Delete
 {
-    internal sealed class Endpoint(ISender sender) : Endpoint<Requests.Order, IResult>
+    internal sealed class Endpoint(ISender sender) : Endpoint<Core.Application.Commands.Delete.Requests.Consumer, IResult>
     {
         public override void Configure()
         {
@@ -19,13 +19,13 @@ public static class Delete
             AllowAnonymous();
         }
 
-        public override async Task<IResult> ExecuteAsync(Requests.Order request, CancellationToken ct)
+        public override async Task<IResult> ExecuteAsync(Requests.Consumer request, CancellationToken ct)
         {
             var command = new Command(request);
 
-            var response = await sender.Send(command, ct);
+            await sender.Send(command, ct);
 
-            return TypedResults.Ok(response);
+            return TypedResults.Ok();
         }
     }
 }

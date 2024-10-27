@@ -1,4 +1,4 @@
-namespace Core.Application;
+namespace Consumers.Core.Application;
 
 public static class Utils
 {

@@ -2,50 +2,38 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Application.Abstractions.Commands;
-using Core.Application.Abstractions.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Domain.Abstractions.Exceptions;
-using Core.Domain.Entities;
-using Core.Domain.Enums;
+using Consumers.Core.Application.Abstractions.Commands;
+using Consumers.Core.Application.Abstractions.Repositories;
+using Consumers.Core.Application.Abstractions.Services;
+using Consumers.Core.Domain.Abstractions.Exceptions;
+using Consumers.Core.Domain.Entities;
+using Consumers.Core.Domain.Enums;
 using FluentValidation;
 
-namespace Core.Application.Commands;
+namespace Consumers.Core.Application.Commands;
 
 public static class Update
 {
     public static class Requests
     {
-        public sealed record Order(
-            Guid Id,
-            Status Status,
-            string FirstName,
-            string LastName,
-            string Email,
-            string CellPhone,
-            string StreetName,
-            string StreetNumber,
-            string ZipCode,
-            string Country,
-            string Town,
-            string ShippingMethodName,
-            string PaymentMethodName,
-            string? Note,
-            string? TrackingNumber);
+        public sealed record Consumer
+        {
+            public required Guid Id { get; init; }
+            public required string FirstName { get; init; }
+            public required string LastName { get; init; }
+            public required string Email { get; init; }
+            public required string CellPhone { get; init; }
+            public required ConsumerType Type { get; init; }
+        }
     }
 
-    public static class Responses
-    {
-        public sealed record Order(Guid Id);
-    }
-
-    public sealed record Command(Requests.Order Order) : IAppCommand<Responses.Order>;
+    public sealed record Command(Requests.Consumer Consumer) : IAppCommandWithoutResponse;
 
     internal sealed class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<Requests.Order, Order>();
+            CreateMap<Requests.Consumer, Consumer>();
         }
     }
 
@@ -53,76 +41,46 @@ public static class Update
     {
         public CommandValidator()
         {
-            RuleFor(command => command.Order)
+            RuleFor(command => command.Consumer)
                 .NotEmpty()
-                .WithMessage("Η παραγγελία είναι υποχρεωτική");
+                .WithMessage("Ο καταναλωτής είναι υποχρεωτικός");
 
-            RuleFor(command => command.Order.Status)
-                .IsInEnum()
-                .WithMessage("Ο καθορισμός της κατάστασης της παραγγελίας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.FirstName)
+            RuleFor(command => command.Consumer.FirstName)
                 .NotEmpty()
                 .WithMessage("Το όνομα είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.LastName)
+            RuleFor(command => command.Consumer.LastName)
                 .NotEmpty()
                 .WithMessage("Το επώνυμο είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.Email)
+            RuleFor(command => command.Consumer.Email)
                 .EmailAddress()
                 .WithMessage("Το email είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.CellPhone)
+            RuleFor(command => command.Consumer.CellPhone)
                 .Matches("^[0-9]*$")
                 .WithMessage("Το κινητό τηλέφωνο είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.StreetName)
+            RuleFor(command => command.Consumer.Type)
                 .NotEmpty()
-                .WithMessage("H οδός είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.StreetNumber)
-                .NotEmpty()
-                .WithMessage("Ο αριθμός είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.ZipCode)
-                .NotEmpty()
-                .WithMessage("Ο ταχυδρομικός κώδικας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.Town)
-                .NotEmpty()
-                .WithMessage("Η πόλη είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.Country)
-                .NotEmpty()
-                .WithMessage("Η χώρα είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.ShippingMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος αποστολής είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.PaymentMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος πληρωμής είναι υποχρεωτικός");
+                .WithMessage("Ο τύπος καταναλωτή είναι υποχρεωτικός");
         }
     }
 
     internal sealed class CommandHandler(
         IMapper mapper,
-        IOrdersRepository ordersRepository,
-        IOrdersService ordersService)
-        : IAppCommandHandler<Command, Responses.Order>
+        IConsumersRepository consumersRepository,
+        IConsumersService consumersService)
+        : IAppCommandHandlerWithoutResponse<Command>
     {
-        public async Task<Responses.Order> Handle(Command command, CancellationToken cancellationToken)
+        public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = await ordersRepository.GetByIdAsync(command.Order.Id, cancellationToken)
-                ?? throw new NotFoundException("Δεν βρέθηκε η παραγγελία");
+            var consumer = await consumersRepository.GetByIdAsync(command.Consumer.Id, cancellationToken)
+                ?? throw new NotFoundException("Δεν βρέθηκε o καταναλωτής");
 
-            mapper.Map(command.Order, order);
+            mapper.Map(command.Consumer, consumer);
 
-            await ordersService.UpdateAsync(order, cancellationToken);
-
-            return new Responses.Order(command.Order.Id);
+            await consumersService.UpdateAsync(consumer, cancellationToken);
         }
     }
 }

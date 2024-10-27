@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation.Internal;
 
-namespace WebApi.Utils;
+namespace Consumers.WebApi.Utils;
 
 public class CamelCasePropertyNameResolver
 {
