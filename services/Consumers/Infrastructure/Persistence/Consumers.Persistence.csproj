@@ -13,10 +13,4 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Application\Consumers.Application.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <Content Remove="Data\**" />
-        <Compile Remove="Data\**" />
-        <EmbeddedResource Remove="Data\**" />
-        <None Remove="Data\**" />
-    </ItemGroup>
 </Project>

@@ -1,13 +1,13 @@
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Threading;
 using System;
-using System.Linq;
-using Core.Domain.Abstractions.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Providers.Core.Domain.Abstractions.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Core.Application.Abstractions.Repositories;
+namespace Providers.Core.Application.Abstractions.Repositories;
 
 public interface IBaseRepository<T> where T : Entity
 {

@@ -4,9 +4,9 @@ WORKDIR /root/app
 
 COPY . .
 
-RUN dotnet restore --use-current-runtime ./WebApi/Consumers.WebApi.csproj
+RUN dotnet restore --use-current-runtime ./WebApi/Providers.WebApi.csproj
 
-RUN dotnet publish -c Release --os linux --arch x64 --use-current-runtime --self-contained false ./WebApi/Consumers.WebApi.csproj -o /root/app/bin
+RUN dotnet publish -c Release --os linux --arch x64 --use-current-runtime --self-contained false ./WebApi/Providers.WebApi.csproj -o /root/app/bin
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime-img
 
@@ -27,4 +27,4 @@ COPY --from=compile-img /root/app/bin .
 
 EXPOSE 8531
 
-ENTRYPOINT ["dotnet", "Consumers.WebApi.dll"]
+ENTRYPOINT ["dotnet", "Providers.WebApi.dll"]

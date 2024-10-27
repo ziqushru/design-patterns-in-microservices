@@ -1,12 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using MySqlConnector;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
 using System;
+using System.Threading;
+using Providers.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
-using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MySqlConnector;
 
-namespace WebApi.Managers;
+namespace Providers.WebApi.Managers;
 
 public static class MigrationsManager
 {

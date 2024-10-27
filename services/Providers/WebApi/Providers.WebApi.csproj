@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>Consumer</RootNamespace>
+        <RootNamespace>Providers.WebApi</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FastEndpoints.Swagger" Version="5.30.0" />
@@ -19,7 +19,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Presentation\Consumers.Presentation.csproj" />
-        <ProjectReference Include="..\Infrastructure\Persistence\Consumers.Persistence.csproj" />
+        <ProjectReference Include="..\Presentation\Providers.Presentation.csproj" />
+        <ProjectReference Include="..\Infrastructure\Persistence\Providers.Persistence.csproj" />
     </ItemGroup>
 </Project>

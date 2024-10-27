@@ -1,62 +1,48 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using Core.Application.Abstractions.Commands;
-using Core.Application.Abstractions.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Domain.Entities;
+using Providers.Core.Application.Abstractions.Commands;
+using Providers.Core.Application.Abstractions.Repositories;
+using Providers.Core.Application.Abstractions.Services;
+using FastEndpoints;
 using FluentValidation;
 
-namespace Core.Application.Commands;
+namespace Providers.Core.Application.Commands;
 
 public static class Delete
 {
     public static class Requests
     {
-        public sealed record Order(Guid Id);
-    }
-
-    public static class Responses
-    {
-        public sealed record Order(Guid Id);
-    }
-
-    public sealed record Command(Requests.Order Order) : IAppCommand<Responses.Order>;
-
-    internal sealed class MappingProfile : Profile
-    {
-        public MappingProfile()
+        public sealed record Provider
         {
-            CreateMap<Requests.Order, Order>();
+            [FromBody]
+            public required Guid Id { get; init; }
         }
     }
+
+    public sealed record Command(Requests.Provider Provider) : IAppCommandWithoutResponse;
 
     internal sealed class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(command => command.Order.Id)
+            RuleFor(command => command.Provider.Id)
                 .NotEmpty()
-                .WithMessage("Id is required");
+                .WithMessage("Το Id είναι υποχρεωτικό");
         }
     }
 
     internal sealed class CommandHandler(
-        IOrdersService ordersService,
-        IOrdersRepository ordersRepository)
-        : IAppCommandHandler<Command, Responses.Order>
+        IProvidersService providersService,
+        IProvidersRepository providersRepository)
+        : IAppCommandHandlerWithoutResponse<Command>
     {
-        public async Task<Responses.Order> Handle(Command command, CancellationToken cancellationToken)
+        public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = await ordersRepository.GetByIdAsync(command.Order.Id, cancellationToken)
-                ?? throw new Exception("Δεν βρέθηκε η παραγγελία");
+            var provider = await providersRepository.GetByIdAsync(command.Provider.Id, cancellationToken)
+                ?? throw new Exception("Δεν βρέθηκε ο πάροχος");
 
-            await ordersService.UpdateAsync(order, cancellationToken);
-
-            await ordersService.DeleteAsync(command.Order.Id, cancellationToken);
-
-            return new Responses.Order(command.Order.Id);
+            await providersService.DeleteAsync(provider, cancellationToken);
         }
     }
 }

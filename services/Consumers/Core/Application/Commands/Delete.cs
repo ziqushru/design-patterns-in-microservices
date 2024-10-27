@@ -28,7 +28,7 @@ public static class Delete
         {
             RuleFor(command => command.Consumer.Id)
                 .NotEmpty()
-                .WithMessage("Id is required");
+                .WithMessage("Το Id είναι υποχρεωτικό");
         }
     }
 

@@ -2,10 +2,10 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>Core.Application</RootNamespace>
+        <RootNamespace>Providers.Core.Application</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Consumers.Domain.csproj" />
+      <ProjectReference Include="..\Domain\Providers.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />

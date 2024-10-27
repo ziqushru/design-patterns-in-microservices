@@ -20,5 +20,48 @@ services:
         networks:
             - intranet
 
+    providers-db:
+        image: mysql:8.4
+        environment:
+            MYSQL_DATABASE: ${DB}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - ../services/ProvidersDb/Configuration/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ../services/ProvidersDb/Configuration/init:/docker-entrypoint-initdb.d:ro
+            - ../services/ProvidersDb/Data:/var/lib/mysql
+        healthcheck:
+            test: mysqladmin ping -h localhost -uroot --password=${DB_ROOT_PASSWORD}
+            start_period: 10s
+            interval: 5s
+            timeout: 5s
+            retries: 10
+        restart: unless-stopped
+        ports:
+            - "23309:3306"
+        networks:
+            - intranet
+
+    messaging-bus:
+        image: rabbitmq:3.9
+        environment:
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+        healthcheck:
+            test: rabbitmqctl node_health_check
+            start_period: 10s
+            interval: 5s
+            timeout: 5s
+            retries: 10
+        restart: unless-stopped
+        volumes:
+          - ../services/MessagingBus/Data:/var/lib/rabbitmq
+          - ../services/MessagingBus/Configuration:/etc/rabbitmq
+          - ../services/MessagingBus/Logs:/var/log/rabbitmq
+        ports:
+            - "25672:25672"
+            - "5672:5672"
+            - "15672:15672"
+        networks:
+            - intranet
 networks:
     intranet:

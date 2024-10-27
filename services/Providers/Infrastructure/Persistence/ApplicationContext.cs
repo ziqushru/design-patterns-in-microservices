@@ -1,15 +1,12 @@
-using Core.Domain.Entities;
+using Providers.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence;
+namespace Providers.Infrastructure.Persistence;
 
 public class ApplicationContext : DbContext
 {
-    public virtual DbSet<Order> Orders =>
-        Set<Order>();
-
-    public virtual DbSet<OrderItem> OrderItems =>
-        Set<OrderItem>();
+    public virtual DbSet<Provider> Providers =>
+        Set<Provider>();
 
     public ApplicationContext()
     { }

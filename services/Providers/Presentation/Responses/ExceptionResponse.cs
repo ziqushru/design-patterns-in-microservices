@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Presentation.Responses;
+namespace Providers.Presentation.Responses;
 
 public sealed record ExceptionResponse(
     int Status,

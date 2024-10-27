@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Domain.Entities;
+using Providers.Core.Domain.Entities;
 
-namespace Core.Application.Abstractions.Services;
+namespace Providers.Core.Application.Abstractions.Services;
 
-public interface IOrdersService
+public interface IProvidersService
 {
     Task<Guid> CreateAsync(
-        Order order,
+        Provider provider,
         CancellationToken cancellationToken = default);
 
     Task UpdateAsync(
-        Order order,
+        Provider provider,
         CancellationToken cancellationToken = default);
 
     Task DeleteAsync(
-        Guid id,
+        Provider provider,
         CancellationToken cancellationToken = default);
 }

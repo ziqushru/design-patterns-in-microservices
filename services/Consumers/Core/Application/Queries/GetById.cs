@@ -38,11 +38,11 @@ public static class GetById
         {
             RuleFor(query => query.Consumer)
                 .NotEmpty()
-                .WithMessage("Consumer is required");
+                .WithMessage("Ο καταναλωτής είναι υποχρεωτικός");
 
             RuleFor(query => query.Consumer.Id)
                 .NotEmpty()
-                .WithMessage("Id is required");
+                .WithMessage("Το Id είναι υποχρεωτικό");
         }
     }
 

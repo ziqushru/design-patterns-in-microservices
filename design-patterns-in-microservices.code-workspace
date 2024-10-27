@@ -9,8 +9,16 @@
 			"path": "services/Consumers"
 		},
 		{
+			"name": "Providers Service",
+			"path": "services/Providers"
+		},
+		{
 			"name": "Static Files Service",
 			"path": "services/StaticFiles"
+		},
+		{
+			"name": "Messaging Bus Service",
+			"path": "services/MessagingBus"
 		},
 		{
 			"name": "Containers Conf",

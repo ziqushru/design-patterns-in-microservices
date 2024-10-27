@@ -1,11 +1,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Providers.Presentation.Responses;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http;
-using Presentation.Responses;
 
-namespace Presentation.PreProcessors;
+namespace Providers.Presentation.PreProcessors;
 
 public class ExceptionPreProcessor : IGlobalPreProcessor
 {

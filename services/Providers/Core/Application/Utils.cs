@@ -1,4 +1,4 @@
-namespace Core.Application;
+namespace Providers.Core.Application;
 
 public static class Utils
 {

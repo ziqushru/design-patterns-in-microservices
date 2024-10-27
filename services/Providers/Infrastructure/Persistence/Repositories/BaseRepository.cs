@@ -7,12 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Core.Application.Abstractions.Repositories;
-using Core.Domain.Abstractions.Entities;
-using Core.Domain.Exceptions;
+using Providers.Core.Application.Abstractions.Repositories;
+using Providers.Core.Domain.Abstractions.Entities;
+using Providers.Core.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories;
+namespace Providers.Infrastructure.Persistence.Repositories;
 
 public abstract class BaseRepository<T>(
     ApplicationContext applicationContext,

@@ -45,6 +45,10 @@ public static class Update
                 .NotEmpty()
                 .WithMessage("Ο καταναλωτής είναι υποχρεωτικός");
 
+            RuleFor(command => command.Consumer.Id)
+                .NotEmpty()
+                .WithMessage("Το Id είναι υποχρεωτικό");
+
             RuleFor(command => command.Consumer.FirstName)
                 .NotEmpty()
                 .WithMessage("Το όνομα είναι υποχρεωτικό");

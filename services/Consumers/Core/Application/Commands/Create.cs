@@ -74,14 +74,14 @@ public static class Create
 
     internal sealed class CommandHandler(
         IMapper mapper,
-        IConsumersService ordersService)
+        IConsumersService consumersService)
         : IAppCommandHandler<Command, Responses.Consumer>
     {
         public async Task<Responses.Consumer> Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = mapper.Map<Consumer>(command.Consumer);
+            var consumer = mapper.Map<Consumer>(command.Consumer);
 
-            var id = await ordersService.CreateAsync(order, cancellationToken);
+            var id = await consumersService.CreateAsync(consumer, cancellationToken);
 
             return new Responses.Consumer
             {

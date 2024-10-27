@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.Domain.Abstractions.Exceptions;
+namespace Providers.Core.Domain.Abstractions.Exceptions;
 
 public abstract class ApplicationException(string title, string message) : Exception(message)
 {

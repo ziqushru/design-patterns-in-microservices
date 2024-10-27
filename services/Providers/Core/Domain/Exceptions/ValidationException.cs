@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Core.Domain.Abstractions.Exceptions;
+using Providers.Core.Domain.Abstractions.Exceptions;
 using FluentValidation.Results;
 
-namespace Core.Domain.Exceptions;
+namespace Providers.Core.Domain.Exceptions;
 
 public sealed class ValidationException(IList<ValidationFailure> errors)
     : ApplicationException("Validation Failure", "One or more validation errors occurred")
