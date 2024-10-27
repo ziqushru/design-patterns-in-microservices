@@ -41,6 +41,27 @@ services:
         networks:
             - intranet
 
+    contracts-db:
+        image: mysql:8.4
+        environment:
+            MYSQL_DATABASE: ${DB}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        volumes:
+            - ../services/ContractsDb/Configuration/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ../services/ContractsDb/Configuration/init:/docker-entrypoint-initdb.d:ro
+            - ../services/ContractsDb/Data:/var/lib/mysql
+        healthcheck:
+            test: mysqladmin ping -h localhost -uroot --password=${DB_ROOT_PASSWORD}
+            start_period: 10s
+            interval: 5s
+            timeout: 5s
+            retries: 10
+        restart: unless-stopped
+        ports:
+            - "23310:3306"
+        networks:
+            - intranet
+
     messaging-bus:
         image: rabbitmq:3.9
         environment:
@@ -55,13 +76,11 @@ services:
         restart: unless-stopped
         volumes:
           - ../services/MessagingBus/Data:/var/lib/rabbitmq
-          - ../services/MessagingBus/Configuration:/etc/rabbitmq
           - ../services/MessagingBus/Logs:/var/log/rabbitmq
         ports:
-            - "25672:25672"
-            - "5424:5672"
-            - "15672:15672"
+            - "5425:5672"
         networks:
             - intranet
+
 networks:
     intranet:
