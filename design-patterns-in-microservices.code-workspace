@@ -17,6 +17,10 @@
 			"path": "services/StaticFiles"
 		},
 		{
+			"name": "Messaging Service",
+			"path": "services/Messaging"
+		},
+		{
 			"name": "Messaging Bus Service",
 			"path": "services/MessagingBus"
 		},

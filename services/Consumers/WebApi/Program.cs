@@ -1,3 +1,4 @@
+using System;
 using Consumers.Core.Application.Abstractions.Repositories;
 using Consumers.Core.Application.Abstractions.Services;
 using Consumers.Core.Application.Behaviors;
@@ -12,6 +13,7 @@ using Consumers.WebApi.Utils;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -68,6 +70,19 @@ builder.Services
     {
         options.DisableAutoDiscovery = true;
         options.Assemblies = [presentationAssembly];
+    })
+    .AddMassTransit(busConfigurator =>
+    {
+        busConfigurator.UsingRabbitMq((context, configurator)=>
+        {
+            configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
+            {
+                h.Username(builder.Configuration["MessageBroken:Username"]!);
+                h.Password(builder.Configuration["MessageBroken:Password"]!);
+            });
+            
+            configurator.ConfigureEndpoints(context);
+        });  
     })
     .AddScoped<IConsumersRepository, ConsumersRepository>()
     .AddScoped<IConsumersService, ConsumersService>()

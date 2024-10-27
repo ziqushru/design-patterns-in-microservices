@@ -1,3 +1,4 @@
+using System;
 using Providers.Core.Application.Abstractions.Repositories;
 using Providers.Core.Application.Abstractions.Services;
 using Providers.Core.Application.Behaviors;
@@ -12,6 +13,7 @@ using Providers.WebApi.Utils;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -69,7 +71,19 @@ builder.Services
         options.DisableAutoDiscovery = true;
         options.Assemblies = [presentationAssembly];
     })
-    .AddScoped<IProvidersRepository, ProvidersRepository>()
+    .AddMassTransit(busConfigurator =>
+    {
+        busConfigurator.UsingRabbitMq((context, configurator)=>
+        {
+            configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
+            {
+                h.Username(builder.Configuration["MessageBroken:Username"]!);
+                h.Password(builder.Configuration["MessageBroken:Password"]!);
+            });
+            
+            configurator.ConfigureEndpoints(context);
+        });  
+    })    .AddScoped<IProvidersRepository, ProvidersRepository>()
     .AddScoped<IProvidersService, ProvidersService>()
     .AddCors(
         options => options.AddPolicy("AllowAll", builder =>

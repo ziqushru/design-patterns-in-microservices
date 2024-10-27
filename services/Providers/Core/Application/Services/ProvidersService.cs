@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MassTransit;
 using Providers.Core.Application.Abstractions.Repositories;
 using Providers.Core.Application.Abstractions.Services;
 using Providers.Core.Domain.Entities;
+using static Messaging.Contracts.ProviderDomainEvents;
 
 namespace Providers.Core.Application.Services;
 
 public class ProvidersService(
+    IPublishEndpoint publishEndpoint,
     IProvidersRepository providersRepository)
     : IProvidersService
 {
@@ -17,6 +20,12 @@ public class ProvidersService(
     {
         var id = await providersRepository.CreateAsync(provider, cancellationToken);
 
+        await publishEndpoint.Publish(new Created
+        {
+            Id = id
+        },
+        cancellationToken);
+
         return id;
     }
 
@@ -25,6 +34,12 @@ public class ProvidersService(
         CancellationToken cancellationToken = default)
     {
         await providersRepository.DeleteAsync(provider, cancellationToken);
+
+        await publishEndpoint.Publish(new Deleted
+        {
+            Id = provider.Id
+        },
+        cancellationToken);
     }
 
     public async Task UpdateAsync(
@@ -32,5 +47,11 @@ public class ProvidersService(
         CancellationToken cancellationToken = default)
     {
         await providersRepository.UpdateAsync(provider, cancellationToken);
+
+        await publishEndpoint.Publish(new Updated
+        {
+            Id = provider.Id
+        },
+        cancellationToken);
     }
 }
