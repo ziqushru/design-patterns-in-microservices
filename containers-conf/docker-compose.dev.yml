@@ -63,10 +63,10 @@ services:
             - intranet
 
     messaging-bus:
-        image: rabbitmq:3.9
+        image: rabbitmq:management
         environment:
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_USER_PASSWORD}
         healthcheck:
             test: rabbitmqctl node_health_check
             start_period: 10s
