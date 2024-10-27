@@ -1,15 +1,18 @@
-using Core.Domain.Entities;
+using Contracts.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence;
+namespace Contracts.Infrastructure.Persistence;
 
 public class ApplicationContext : DbContext
 {
-    public virtual DbSet<Order> Orders =>
-        Set<Order>();
-
-    public virtual DbSet<OrderItem> OrderItems =>
-        Set<OrderItem>();
+      public virtual DbSet<Contract> Contracts =>
+        Set<Contract>();
+        
+    public virtual DbSet<Consumer> Consumers =>
+        Set<Consumer>();
+        
+    public virtual DbSet<Provider> Providers =>
+        Set<Provider>();
 
     public ApplicationContext()
     { }

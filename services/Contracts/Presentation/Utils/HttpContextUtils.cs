@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Domain.Abstractions.Exceptions;
-using Core.Domain.Exceptions;
+using Contracts.Core.Domain.Abstractions.Exceptions;
+using Contracts.Core.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
-using ApplicationException = Core.Domain.Abstractions.Exceptions.ApplicationException;
+using ApplicationException = Contracts.Core.Domain.Abstractions.Exceptions.ApplicationException;
 
-namespace Presentation.Utils;
+namespace Contracts.Presentation.Utils;
 
 public static class HttpContextUtils
 {

@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>Core.Domain</RootNamespace>
+        <RootNamespace>Contracts.Core.Domain</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="MediatR" Version="12.4.1" />

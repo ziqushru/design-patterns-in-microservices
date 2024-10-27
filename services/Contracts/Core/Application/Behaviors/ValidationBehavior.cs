@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using ValidationException = Core.Domain.Exceptions.ValidationException;
+using ValidationException = Contracts.Core.Domain.Exceptions.ValidationException;
 
-namespace Core.Application.Behaviors;
+namespace Contracts.Core.Application.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>

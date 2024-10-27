@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Domain.Entities;
+using Contracts.Core.Domain.Entities;
 
-namespace Core.Application.Abstractions.Services;
+namespace Contracts.Core.Application.Abstractions.Services;
 
-public interface IOrdersService
+public interface IContractsService
 {
     Task<Guid> CreateAsync(
-        Order order,
+        Contract contract,
         CancellationToken cancellationToken = default);
 
     Task UpdateAsync(
-        Order order,
+        Contract contract,
         CancellationToken cancellationToken = default);
 
     Task DeleteAsync(
-        Guid id,
+        Contract contract,
         CancellationToken cancellationToken = default);
 }

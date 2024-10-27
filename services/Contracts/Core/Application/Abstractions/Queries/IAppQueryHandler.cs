@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Core.Application.Abstractions.Queries;
+namespace Contracts.Core.Application.Abstractions.Queries;
 
 public interface IAppQueryHandler<in TRequest, TResponse>
     : IRequestHandler<TRequest, TResponse?>

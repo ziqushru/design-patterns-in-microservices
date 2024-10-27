@@ -3,25 +3,25 @@ using System.Threading.Tasks;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using static Core.Application.Queries.GetById;
+using static Contracts.Core.Application.Queries.GetAll;
 
-namespace Presentation.Endpoints.Queries;
+namespace Contracts.Presentation.Endpoints.Orders.Queries;
 
-public static class GetById
+public static class GetAll
 {
-    internal sealed class Endpoint(ISender sender) : Endpoint<Requests.Order, IResult>
+    internal sealed class Endpoint(ISender sender) : EndpointWithoutRequest<IResult>
     {
         public override void Configure()
         {
-            Get("/get-by-id");
+            Get("/get-all");
             Version(1);
             Options(x => x.WithTags("Queries"));
             AllowAnonymous();
         }
 
-        public override async Task<IResult> ExecuteAsync(Requests.Order request, CancellationToken ct)
+        public override async Task<IResult> ExecuteAsync(CancellationToken ct)
         {
-            var query = new Query(request);
+            var query = new Query();
 
             var response = await sender.Send(query, ct);
 

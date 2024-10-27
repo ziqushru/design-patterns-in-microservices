@@ -1,57 +1,42 @@
-using AutoMapper;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using Contracts.Core.Application.Abstractions.Commands;
+using Contracts.Core.Application.Abstractions.Services;
+using Contracts.Core.Domain.Entities;
+using Contracts.Core.Domain.Enums;
 using FluentValidation;
-using Core.Application.Abstractions.Commands;
-using Core.Domain.Entities;
-using Core.Application.Abstractions.Services;
-using System.Collections.Generic;
-using Core.Domain.Enums;
 
-namespace Core.Application.Commands;
+namespace Contracts.Core.Application.Commands;
 
 public static class Create
 {
     public static class Requests
     {
-        public sealed record Order(
-            Status Status,
-            string FirstName,
-            string LastName,
-            string Email,
-            string CellPhone,
-            string StreetName,
-            string StreetNumber,
-            string ZipCode,
-            string Country,
-            string Town,
-            string PaymentMethodName,
-            string ShippingMethodName,
-            IList<OrderItem> OrderItems,
-            string? Note,
-            string? TrackingNumber);
-
-        public sealed record OrderItem(
-            int Quantity,
-            double Price,
-            string ProductName);
+        public sealed record Contract
+        {
+            public required Guid ConsumerId { get; init; }
+            public required Guid ProviderId { get; init; }
+            public required ContractStatus Status { get; init; }
+        }
     }
 
     public static class Responses
     {
-        public sealed record Order(Guid Id);
+        public sealed record Contract
+        {
+            public required Guid Id { get; init; }
+        }
     }
 
-    public sealed record Command(Requests.Order Order) : IAppCommand<Responses.Order>;
+    public sealed record Command(Requests.Contract Contract) : IAppCommand<Responses.Contract>;
 
     internal sealed class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<Requests.Order, Order>();
-
-            CreateMap<Requests.OrderItem, OrderItem>();
+            CreateMap<Requests.Contract, Contract>();
         }
     }
 
@@ -59,72 +44,39 @@ public static class Create
     {
         public CommandValidator()
         {
-            RuleFor(command => command.Order)
+            RuleFor(command => command.Contract)
                 .NotEmpty()
-                .WithMessage("Η παραγγελία είναι υποχρεωτική");
+                .WithMessage("Η σύμβαση είναι υποχρεωτική");
 
-            RuleFor(command => command.Order.Status)
-                .IsInEnum()
-                .WithMessage("Ο καθορισμός της κατάστασης της παραγγελίας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.FirstName)
+            RuleFor(command => command.Contract.ConsumerId)
                 .NotEmpty()
-                .WithMessage("Το όνομα είναι υποχρεωτικό");
+                .WithMessage("Το ConsumerId είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.LastName)
+            RuleFor(command => command.Contract.ProviderId)
                 .NotEmpty()
-                .WithMessage("Το επώνυμο είναι υποχρεωτικό");
+                .WithMessage("Το ProviderId είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.Email)
-                .EmailAddress()
-                .WithMessage("Το email είναι υποχρεωτικό");
-
-            RuleFor(command => command.Order.CellPhone)
-                .Matches("^[0-9]*$")
-                .WithMessage("Το κινητό τηλέφωνο είναι υποχρεωτικό");
-
-            RuleFor(command => command.Order.StreetName)
+            RuleFor(command => command.Contract.Status)
                 .NotEmpty()
-                .WithMessage("H οδός είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.StreetNumber)
-                .NotEmpty()
-                .WithMessage("Ο αριθμός είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.ZipCode)
-                .NotEmpty()
-                .WithMessage("Ο ταχυδρομικός κώδικας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.Town)
-                .NotEmpty()
-                .WithMessage("Η πόλη είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.Country)
-                .NotEmpty()
-                .WithMessage("Η χώρα είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.ShippingMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος αποστολής είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.PaymentMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος πληρωμής είναι υποχρεωτικός");
+                .WithMessage("Η κατάσταση της σύμβασης είναι υποχρεωτική");
         }
     }
 
     internal sealed class CommandHandler(
         IMapper mapper,
-        IOrdersService ordersService)
-        : IAppCommandHandler<Command, Responses.Order>
+        IContractsService contractsService)
+        : IAppCommandHandler<Command, Responses.Contract>
     {
-        public async Task<Responses.Order> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Responses.Contract> Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = mapper.Map<Order>(command.Order);
+            var contract = mapper.Map<Contract>(command.Contract);
 
-            var id = await ordersService.CreateAsync(order, cancellationToken);
+            var id = await contractsService.CreateAsync(contract, cancellationToken);
 
-            return new Responses.Order(id);
+            return new Responses.Contract
+            {
+                Id = id
+            };
         }
     }
 }

@@ -2,50 +2,36 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Application.Abstractions.Commands;
-using Core.Application.Abstractions.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Domain.Abstractions.Exceptions;
-using Core.Domain.Entities;
-using Core.Domain.Enums;
+using Contracts.Core.Application.Abstractions.Commands;
+using Contracts.Core.Application.Abstractions.Repositories;
+using Contracts.Core.Application.Abstractions.Services;
+using Contracts.Core.Domain.Abstractions.Exceptions;
+using Contracts.Core.Domain.Entities;
+using Contracts.Core.Domain.Enums;
 using FluentValidation;
 
-namespace Core.Application.Commands;
+namespace Contracts.Core.Application.Commands;
 
 public static class Update
 {
     public static class Requests
     {
-        public sealed record Order(
-            Guid Id,
-            Status Status,
-            string FirstName,
-            string LastName,
-            string Email,
-            string CellPhone,
-            string StreetName,
-            string StreetNumber,
-            string ZipCode,
-            string Country,
-            string Town,
-            string ShippingMethodName,
-            string PaymentMethodName,
-            string? Note,
-            string? TrackingNumber);
+        public sealed record Contract
+        {
+            public required Guid Id { get; init; }
+            public required Guid ConsumerId { get; init; }
+            public required Guid ProviderId { get; init; }
+            public required ContractStatus Status { get; init; }
+        }
     }
 
-    public static class Responses
-    {
-        public sealed record Order(Guid Id);
-    }
-
-    public sealed record Command(Requests.Order Order) : IAppCommand<Responses.Order>;
+    public sealed record Command(Requests.Contract Contract) : IAppCommandWithoutResponse;
 
     internal sealed class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<Requests.Order, Order>();
+            CreateMap<Requests.Contract, Contract>();
         }
     }
 
@@ -53,76 +39,42 @@ public static class Update
     {
         public CommandValidator()
         {
-            RuleFor(command => command.Order)
+            RuleFor(command => command.Contract)
                 .NotEmpty()
-                .WithMessage("Η παραγγελία είναι υποχρεωτική");
+                .WithMessage("Η σύμβαση είναι υποχρεωτική");
 
-            RuleFor(command => command.Order.Status)
-                .IsInEnum()
-                .WithMessage("Ο καθορισμός της κατάστασης της παραγγελίας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.FirstName)
+            RuleFor(command => command.Contract.Id)
                 .NotEmpty()
-                .WithMessage("Το όνομα είναι υποχρεωτικό");
+                .WithMessage("Το Id είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.LastName)
+            RuleFor(command => command.Contract.ConsumerId)
                 .NotEmpty()
-                .WithMessage("Το επώνυμο είναι υποχρεωτικό");
+                .WithMessage("Το ConsumerId είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.Email)
-                .EmailAddress()
-                .WithMessage("Το email είναι υποχρεωτικό");
-
-            RuleFor(command => command.Order.CellPhone)
-                .Matches("^[0-9]*$")
-                .WithMessage("Το κινητό τηλέφωνο είναι υποχρεωτικό");
-
-            RuleFor(command => command.Order.StreetName)
+            RuleFor(command => command.Contract.ProviderId)
                 .NotEmpty()
-                .WithMessage("H οδός είναι υποχρεωτική");
+                .WithMessage("Το ProviderId είναι υποχρεωτικό");
 
-            RuleFor(command => command.Order.StreetNumber)
+            RuleFor(command => command.Contract.Status)
                 .NotEmpty()
-                .WithMessage("Ο αριθμός είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.ZipCode)
-                .NotEmpty()
-                .WithMessage("Ο ταχυδρομικός κώδικας είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.Town)
-                .NotEmpty()
-                .WithMessage("Η πόλη είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.Country)
-                .NotEmpty()
-                .WithMessage("Η χώρα είναι υποχρεωτική");
-
-            RuleFor(command => command.Order.ShippingMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος αποστολής είναι υποχρεωτικός");
-
-            RuleFor(command => command.Order.PaymentMethodName)
-                .NotEmpty()
-                .WithMessage("Ο τρόπος πληρωμής είναι υποχρεωτικός");
+                .WithMessage("Η κατάσταση της σύμβασης είναι υποχρεωτική");
         }
     }
 
     internal sealed class CommandHandler(
         IMapper mapper,
-        IOrdersRepository ordersRepository,
-        IOrdersService ordersService)
-        : IAppCommandHandler<Command, Responses.Order>
+        IContractsRepository contractsRepository,
+        IContractsService contractsService)
+        : IAppCommandHandlerWithoutResponse<Command>
     {
-        public async Task<Responses.Order> Handle(Command command, CancellationToken cancellationToken)
+        public async Task Handle(Command command, CancellationToken cancellationToken)
         {
-            var order = await ordersRepository.GetByIdAsync(command.Order.Id, cancellationToken)
-                ?? throw new NotFoundException("Δεν βρέθηκε η παραγγελία");
+            var contract = await contractsRepository.GetByIdAsync(command.Contract.Id, cancellationToken)
+                ?? throw new NotFoundException("Δεν βρέθηκε η σύμβαση");
 
-            mapper.Map(command.Order, order);
+            mapper.Map(command.Contract, contract);
 
-            await ordersService.UpdateAsync(order, cancellationToken);
-
-            return new Responses.Order(command.Order.Id);
+            await contractsService.UpdateAsync(contract, cancellationToken);
         }
     }
 }

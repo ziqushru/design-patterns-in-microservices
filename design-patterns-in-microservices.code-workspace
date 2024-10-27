@@ -13,12 +13,16 @@
 			"path": "services/Providers"
 		},
 		{
-			"name": "Static Files Service",
-			"path": "services/StaticFiles"
+			"name": "Contracts Service",
+			"path": "services/Contracts"
 		},
 		{
 			"name": "Messaging Service",
 			"path": "services/Messaging"
+		},
+		{
+			"name": "Static Files Service",
+			"path": "services/StaticFiles"
 		},
 		{
 			"name": "Messaging Bus Service",

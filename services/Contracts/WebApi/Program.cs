@@ -1,6 +1,19 @@
+using System;
+using Contracts.Core.Application.Abstractions.Repositories;
+using Contracts.Core.Application.Abstractions.Services;
+using Contracts.Core.Application.Behaviors;
+using Contracts.Core.Application.Commands;
+using Contracts.Core.Application.Services;
+using Contracts.Infrastructure.Persistence;
+using Contracts.Infrastructure.Persistence.Repositories;
+using Contracts.Presentation.PostProcessors;
+using Contracts.Presentation.PreProcessors;
+using Contracts.WebApi.Managers;
+using Contracts.WebApi.Utils;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -8,16 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Repositories;
-using Core.Application.Abstractions.Services;
-using Core.Application.Abstractions.Repositories;
-using Presentation.PostProcessors;
-using Core.Application.Behaviors;
-using Presentation.PreProcessors;
-using WebApi.Utils;
-using WebApi.Managers;
-using Core.Application.Services;
+using Update = Contracts.Presentation.Endpoints.Orders.Commands.Update;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -32,9 +36,9 @@ builder.Host.UseSerilog((_, _, configuration) =>
 var mysqlServerVersion = ServerVersion.AutoDetect(databaseConnectionString);
 
 var domainAssembly = typeof(Order).Assembly;
-var applicationAssembly = typeof(Core.Application.Commands.Create).Assembly;
-var presentationAssembly = typeof(Presentation.Endpoints.Commands.Update).Assembly;
-var persistenceAssembly = typeof(Infrastructure.Persistence.ApplicationContext).Assembly;
+var applicationAssembly = typeof(Create).Assembly;
+var presentationAssembly = typeof(Update).Assembly;
+var persistenceAssembly = typeof(ApplicationContext).Assembly;
 
 ValidatorOptions.Global.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
 
@@ -67,8 +71,21 @@ builder.Services
         options.DisableAutoDiscovery = true;
         options.Assemblies = [presentationAssembly];
     })
-    .AddScoped<IOrdersRepository, OrdersRepository>()
-    .AddScoped<IOrdersService, OrdersService>()
+    .AddMassTransit(busConfigurator =>
+    {
+        busConfigurator.UsingRabbitMq((context, configurator) =>
+        {
+            configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
+            {
+                h.Username(builder.Configuration["MessageBroken:Username"]!);
+                h.Password(builder.Configuration["MessageBroken:Password"]!);
+            });
+
+            configurator.ConfigureEndpoints(context);
+        });
+    })
+    .AddScoped<IContractsRepository, ContractsRepository>()
+    .AddScoped<IContractsService, ContractsService>()
     .AddCors(
         options => options.AddPolicy("AllowAll", builder =>
             builder
@@ -86,7 +103,7 @@ if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
             o.DocumentSettings = s =>
             {
                 s.DocumentName = "v1.0.0";
-                s.Title = "Payments";
+                s.Title = "Contracts";
                 s.Version = "v1.0.0";
             };
         });

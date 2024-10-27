@@ -1,13 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Contracts.Presentation.Responses;
+using Contracts.Presentation.Utils;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http;
-using Presentation.Responses;
-using Presentation.Utils;
 using Serilog;
 
-namespace Presentation.PostProcessors;
+namespace Contracts.Presentation.PostProcessors;
 
 public class ExceptionPostProcessor(ILogger logger) : IGlobalPostProcessor
 {

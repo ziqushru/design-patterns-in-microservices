@@ -1,67 +1,54 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Abstractions.Queries;
-using Core.Domain.Enums;
-using FluentValidation;
+using Contracts.Core.Application.Abstractions.Queries;
+using Contracts.Core.Domain.Enums;
 using Dapper;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
-namespace Core.Application.Queries;
+namespace Contracts.Core.Application.Queries;
 
 public static class GetById
 {
     public static class Requests
     {
-        public sealed record Order(Guid Id);
+        public sealed record Contract(Guid Id);
     }
 
     public static class Responses
     {
-        public sealed record Order
+        public sealed record Contract
         {
             public required Guid Id { get; init; }
-            public required Status Status { get; init; }
-            public required int OrderNumber { get; init; }
-            public required string StreetName { get; init; }
-            public required string StreetNumber { get; init; }
-            public required string ZipCode { get; init; }
-            public required string Country { get; init; }
-            public required string Town { get; init; }
-            public required string LastName { get; init; }
-            public required string FirstName { get; init; }
-            public required string Email { get; init; }
-            public required string CellPhone { get; init; }
-            public required string PaymentMethodName { get; init; }
-            public required string ShippingMethodName { get; init; }
-            public required double Price { get; init; }
-            public string? Note { get; init; }
-            public string? TrackingNumber { get; init; }
+            public required Guid ConsumerId { get; init; }
+            public required Guid ProviderId { get; init; }
+            public required ContractStatus Status { get; init; }
         }
     }
 
-    public sealed record Query(Requests.Order Order) : IAppQuery<Responses.Order>;
+    public sealed record Query(Requests.Contract Contract) : IAppQuery<Responses.Contract>;
 
     internal sealed class QueryValidator : AbstractValidator<Query>
     {
         public QueryValidator()
         {
-            RuleFor(query => query.Order)
+            RuleFor(query => query.Contract)
                 .NotEmpty()
-                .WithMessage("Order is required");
+                .WithMessage("Η σύμβαση είναι υποχρεωτική");
 
-            RuleFor(query => query.Order.Id)
+            RuleFor(query => query.Contract.Id)
                 .NotEmpty()
-                .WithMessage("Id is required");
+                .WithMessage("Το Id είναι υποχρεωτικό");
         }
     }
 
     internal sealed class QueryHandler(
         IConfiguration configuration)
-        : IAppQueryHandler<Query, Responses.Order>
+        : IAppQueryHandler<Query, Responses.Contract>
     {
-        public async Task<Responses.Order?> Handle(Query query, CancellationToken cancellationToken)
+        public async Task<Responses.Contract?> Handle(Query query, CancellationToken cancellationToken)
         {
             var connectionString = configuration.GetConnectionString("App");
 
@@ -69,16 +56,17 @@ public static class GetById
 
             var sql = """
                 select
-                    Orders.*
+                    Contracts.Id as Id,
+                    Contracts.ConsumerId as ConsumerId,
+                    Contracts.ProviderId as ProviderId,
+                    Contracts.Status as Status
                 from
-                    Orders
+                    Contracts
                 where
-                    Orders.Id = @Id
-                order by
-                    Orders.DateSubmitted desc
+                    Contracts.Id = @Id
             """;
 
-            return await connection.QuerySingleOrDefaultAsync<Responses.Order>(sql, new { query.Order.Id });
+            return await connection.QuerySingleOrDefaultAsync<Responses.Contract>(sql, new { query.Contract.Id });
         }
     }
 }

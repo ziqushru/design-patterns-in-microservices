@@ -1,4 +1,4 @@
-namespace Core.Domain.Abstractions.Exceptions;
+namespace Contracts.Core.Domain.Abstractions.Exceptions;
 
 public abstract class InvalidOperationException(string message)
     : ApplicationException("Invalid Operation", message);
