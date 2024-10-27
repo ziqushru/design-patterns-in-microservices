@@ -5,13 +5,13 @@
         <RootNamespace>Core.Application</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Orders.Domain.csproj" />
+      <ProjectReference Include="..\Domain\Consumers.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="Dapper" Version="2.1.35" />
-      <PackageReference Include="FastEndpoints" Version="5.29.0" />
-      <PackageReference Include="FastEndpoints.Security" Version="5.29.0" />
-      <PackageReference Include="MySql.Data" Version="9.0.0" />
+      <PackageReference Include="FastEndpoints" Version="5.30.0" />
+      <PackageReference Include="FastEndpoints.Security" Version="5.30.0" />
+      <PackageReference Include="MySql.Data" Version="9.1.0" />
     </ItemGroup>
 </Project>

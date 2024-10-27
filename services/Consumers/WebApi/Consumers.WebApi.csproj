@@ -2,24 +2,24 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>WebApi</RootNamespace>
+        <RootNamespace>Consumer</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="FastEndpoints.Swagger" Version="5.29.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.30.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.4" />
         <PackageReference Include="Serilog.Sinks.MySQL" Version="5.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Presentation\Orders.Presentation.csproj" />
-        <ProjectReference Include="..\Infrastructure\Persistence\Orders.Persistence.csproj" />
+        <ProjectReference Include="..\Presentation\Consumers.Presentation.csproj" />
+        <ProjectReference Include="..\Infrastructure\Persistence\Consumers.Persistence.csproj" />
     </ItemGroup>
 </Project>

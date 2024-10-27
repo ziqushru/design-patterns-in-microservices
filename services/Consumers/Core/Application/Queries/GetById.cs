@@ -61,7 +61,7 @@ public static class GetById
         IConfiguration configuration)
         : IAppQueryHandler<Query, Responses.Order>
     {
-        public async Task<Responses.Order> Handle(Query query, CancellationToken cancellationToken)
+        public async Task<Responses.Order?> Handle(Query query, CancellationToken cancellationToken)
         {
             var connectionString = configuration.GetConnectionString("App");
 

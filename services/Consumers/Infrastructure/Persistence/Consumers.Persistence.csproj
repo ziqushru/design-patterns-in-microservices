@@ -11,6 +11,12 @@
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\Application\Orders.Application.csproj" />
+      <ProjectReference Include="..\..\Core\Application\Consumers.Application.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="Data\**" />
+        <Compile Remove="Data\**" />
+        <EmbeddedResource Remove="Data\**" />
+        <None Remove="Data\**" />
     </ItemGroup>
 </Project>

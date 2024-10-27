@@ -2,15 +2,15 @@
 	"folders": [
 		{
 			"name": "Gatekeeper Service",
-			"path": "services/gatekeeper"
+			"path": "services/Gatekeeper"
 		},
 		{
-			"name": "Orders Service",
-			"path": "services/orders"
+			"name": "Consumers Service",
+			"path": "services/Consumers"
 		},
 		{
 			"name": "Static Files Service",
-			"path": "services/static-files"
+			"path": "services/StaticFiles"
 		},
 		{
 			"name": "Containers Conf",
