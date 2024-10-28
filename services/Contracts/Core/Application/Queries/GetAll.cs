@@ -16,10 +16,11 @@ public static class GetAll
     {
         public sealed record Contract
         {
-            public required Guid Id { get; init; }
-            public required Guid ConsumerId { get; init; }
-            public required Guid ProviderId { get; init; }
+            public required Guid ContractId { get; init; }
             public required ContractStatus Status { get; init; }
+            public required string ConsumerFullName { get; init; }
+            public required ConsumerType ConsumerType { get; init; }
+            public required string ProviderBrandName { get; init; }
         }
     }
 
@@ -33,16 +34,19 @@ public static class GetAll
         {
             var connectionString = configuration.GetConnectionString("App");
 
-            using var connection = new MySqlConnection(connectionString);
+            await using var connection = new MySqlConnection(connectionString);
 
             var sql = """
                 select
-                    Contracts.Id as Id,
-                    Contracts.ConsumerId as ConsumerId,
-                    Contracts.ProviderId as ProviderId,
-                    Contracts.Status as Status
+                    Contracts.Id as ContractId,
+                    Contracts.Status as ContractStatus,
+                    Consumers.LastName + ' ' + Consumers.FirstName as ConsumerFullName,
+                    Consumers.Type as ConsumerType,
+                    Providers.BrandName as ProviderBrandName
                 from
                     Contracts
+                    inner join Consumers on Contracts.ConsumerId = Consumers.Id
+                    inner join Providers on Contracts.ProviderId = Providers.Id
             """;
 
             return await connection.QueryAsync<Responses.Contract>(sql);

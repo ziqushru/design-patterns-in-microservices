@@ -1,0 +1,49 @@
+// Define some variables for colors and other common styles
+$background-color: #141414;
+$text-color: #fff;
+$border-color: #444;
+$hover-border-color: #555;
+$focus-border-color: #ff4388;
+$padding: 10px;
+$border-radius: 5px;
+
+// Style the select dropdown
+select.formkit-input {
+    background-color: $background-color;
+    color: $text-color;
+    border: 1px solid $border-color;
+    padding: $padding;
+    border-radius: $border-radius;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid $text-color;
+        pointer-events: none;
+        transform: translateY(-50%);
+    }
+
+    &:hover {
+        border-color: $hover-border-color;
+    }
+
+    &:focus {
+        border-color: $focus-border-color;
+        outline: none;
+    }
+
+    option {
+        background-color: $background-color;
+        color: $text-color !important;
+    }
+}

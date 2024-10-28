@@ -1,6 +1,10 @@
 {
 	"folders": [
 		{
+			"name": "Control Panel",
+			"path": "services/ControlPanel"
+		},
+		{
 			"name": "Gatekeeper Service",
 			"path": "services/Gatekeeper"
 		},

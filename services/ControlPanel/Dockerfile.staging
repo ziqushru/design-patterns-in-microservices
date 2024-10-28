@@ -1,0 +1,28 @@
+FROM node:22.2-alpine3.19 as build-stage
+
+WORKDIR /root/admin-frontend
+
+COPY package.json ./
+
+RUN npm install
+
+COPY . .
+COPY ./.env.staging .env
+
+RUN npm run build
+
+
+FROM node:22.2-alpine3.19 as production-stage
+
+WORKDIR /root/admin-frontend
+
+COPY --from=build-stage /root/admin-frontend/.env ./.env
+COPY --from=build-stage /root/admin-frontend/.nuxt ./.nuxt
+COPY --from=build-stage /root/admin-frontend/.output ./.output
+COPY --from=build-stage /root/admin-frontend/package.json ./package.json
+
+RUN npm install --omit=dev
+
+EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]

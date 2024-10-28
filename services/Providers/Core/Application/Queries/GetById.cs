@@ -51,7 +51,7 @@ public static class GetById
         {
             var connectionString = configuration.GetConnectionString("App");
 
-            using var connection = new MySqlConnection(connectionString);
+            await using var connection = new MySqlConnection(connectionString);
 
             var sql = """
                 select

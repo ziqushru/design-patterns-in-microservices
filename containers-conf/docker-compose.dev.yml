@@ -17,8 +17,6 @@ services:
         restart: unless-stopped
         ports:
             - "23308:3306"
-        networks:
-            - intranet
 
     providers-db:
         image: mysql:8.4
@@ -38,8 +36,6 @@ services:
         restart: unless-stopped
         ports:
             - "23309:3306"
-        networks:
-            - intranet
 
     contracts-db:
         image: mysql:8.4
@@ -59,8 +55,6 @@ services:
         restart: unless-stopped
         ports:
             - "23310:3306"
-        networks:
-            - intranet
 
     messaging-bus:
         image: rabbitmq:management
@@ -80,8 +74,3 @@ services:
         ports:
             - "5425:5672"
             - "15425:15672"
-        networks:
-            - intranet
-
-networks:
-    intranet:

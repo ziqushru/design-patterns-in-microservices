@@ -29,7 +29,7 @@ app.MapPost("/create",
 
             var fullFilePath = Path.Combine(uploadPath, file.FileName);
 
-            using var stream = new FileStream(fullFilePath, FileMode.Create);
+            await using var stream = new FileStream(fullFilePath, FileMode.Create);
 
             await file.CopyToAsync(stream);
 

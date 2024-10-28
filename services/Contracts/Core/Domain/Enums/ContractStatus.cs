@@ -4,12 +4,12 @@ namespace Contracts.Core.Domain.Enums;
 
 public enum ContractStatus
 {
-    [Description("NotDefined")]
+    [Description("Μη Ορισμένη")]
     NotDefined,
 
-    [Description("Αναμονή")]
+    [Description("Εκκρεμή")]
     Pending,
 
-    [Description("Επικυρωμένο")]
+    [Description("Εγκεκριμένη")]
     Approved
 }

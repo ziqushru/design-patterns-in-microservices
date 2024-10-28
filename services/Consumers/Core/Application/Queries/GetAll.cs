@@ -35,7 +35,7 @@ public static class GetAll
         {
             var connectionString = configuration.GetConnectionString("App");
 
-            using var connection = new MySqlConnection(connectionString);
+            await using var connection = new MySqlConnection(connectionString);
 
             var sql = """
                 select

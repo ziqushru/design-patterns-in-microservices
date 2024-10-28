@@ -4,12 +4,12 @@ namespace Consumers.Core.Domain.Enums;
 
 public enum ConsumerType
 {
-    [Description("NotDefined")]
+    [Description("Μη Ορισμένο")]
     NotDefined,
 
-    [Description("Person")]
-    Person,
+    [Description("Φυσικό Πρόσωπο")]
+    Individual,
 
-    [Description("Organization")]
-    Organization
+    [Description("Επιχείρηση")]
+    Company
 }
